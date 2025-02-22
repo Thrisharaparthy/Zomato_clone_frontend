@@ -1,0 +1,94 @@
+.special-offers {
+    padding: 4rem 5%;
+    background: #fff;
+  }
+  
+  .special-offers h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #333;
+    font-size: 2rem;
+  }
+  
+  .offers-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .offer-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .offer-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .offer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .offer-header h3 {
+    color: #333;
+    font-size: 1.3rem;
+  }
+  
+  .discount {
+    background: #e23744;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+  }
+  
+  .offer-description {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  .offer-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    color: #666;
+  }
+  
+  .offer-code {
+    background: #f5f5f5;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  
+  .claim-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #e23744;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .claim-btn:hover {
+    background: #d62d3a;
+  }
+  
+  @media (max-width: 768px) {
+    .special-offers {
+      padding: 3rem 1rem;
+    }
+  }

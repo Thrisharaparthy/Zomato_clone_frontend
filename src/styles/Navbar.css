@@ -1,0 +1,130 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    transition: all 0.4s ease;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8));
+  }
+  
+  .navbar.scrolled {
+    background: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  
+  .logo:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .logo h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffffff, #e23744);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .navbar.scrolled .logo h2 {
+    background: linear-gradient(45deg, #1c1c1c, #e23744);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .logo-icon {
+    font-size: 2rem;
+    color: #e23744;
+    filter: drop-shadow(0 2px 4px rgba(226, 55, 68, 0.3));
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 3.5rem;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    position: relative;
+  }
+  
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #e23744;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+  
+  .navbar.scrolled .nav-links a {
+    color: #333;
+  }
+  
+  .login-btn {
+    padding: 0.8rem 2rem;
+    background: linear-gradient(45deg, #e23744, #ff6b81);
+    border: none;
+    color: white;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(226, 55, 68, 0.4);
+    background: linear-gradient(45deg, #ff6b81, #e23744);
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 1rem 4%;
+    }
+  
+    .nav-links {
+      display: none;
+    }
+  
+    .logo {
+      padding: 0.6rem 1rem;
+    }
+  
+    .logo h2 {
+      font-size: 1.6rem;
+    }
+  
+    .login-btn {
+      padding: 0.7rem 1.5rem;
+      font-size: 0.9rem;
+    }
+  }
