@@ -1,78 +1,88 @@
-// ... existing imports ...
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import '../styles/Cart.css';
 
-const Cart = ({ isOpen, onClose }) => {
-  // ... existing state and functions ...
-
-  const [feedback, setFeedback] = useState({
-    rating: 0,
-    comment: ''
-  });
-
-  const handleRating = (rating) => {
-    setFeedback(prev => ({ ...prev, rating }));
-  };
-
-  const handleComment = (e) => {
-    setFeedback(prev => ({ ...prev, comment: e.target.value }));
-  };
-
-  const submitFeedback = () => {
-    if (feedback.rating === 0) {
-      alert('Please select a rating');
-      return;
-    }
-    console.log('Feedback submitted:', feedback);
-    setFeedback({ rating: 0, comment: '' });
-  };
+function Cart() {
+  const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const navigate = useNavigate();
 
   return (
-    <div className={`cart-sidebar ${isOpen ? 'active' : ''}`}>
-      {/* ... existing cart header and items ... */}
-
-      <div className="cart-footer">
-        <div className="total">
-          <span>Total:</span>
-          <span>${total.toFixed(2)}</span>
-        </div>
-        <button 
-          className="checkout-btn"
-          onClick={handleCheckout}
-          disabled={cartItems.length === 0}
-        >
-          Proceed to Checkout
-        </button>
-
-        <div className="feedback-section">
-          <h3>Rate Your Experience</h3>
-          <div className="star-rating">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                className={`star-btn ${star <= feedback.rating ? 'active' : ''}`}
-                onClick={() => handleRating(star)}
-              >
-                <FontAwesomeIcon icon={faStar} />
-              </button>
-            ))}
+    <div className="cart-page">
+      <div className="cart-container">
+        <h2 className="cart-title">Your Cart</h2>
+        
+        {cartItems.length === 0 ? (
+          <div className="empty-cart">
+            <h3>Your cart is empty</h3>
+            <button onClick={() => navigate('/menu')} className="continue-shopping">
+              Browse Menu
+            </button>
           </div>
-          <textarea
-            placeholder="Leave your feedback (optional)"
-            value={feedback.comment}
-            onChange={handleComment}
-            className="feedback-input"
-          />
-          <button 
-            className="submit-feedback-btn"
-            onClick={submitFeedback}
-            disabled={feedback.rating === 0}
-          >
-            Submit Feedback
-          </button>
-        </div>
+        ) : (
+          <>
+            <div className="cart-items">
+              {cartItems.map((item) => (
+                <div key={item.id} className="cart-item">
+                  <div className="item-image">
+                    <img src={item.image} alt={item.name} />
+                  </div>
+                  <div className="item-info">
+                    <div className="item-header">
+                      <h3>{item.name}</h3>
+                      <span className="item-price">${item.price.toFixed(2)}</span>
+                    </div>
+                    <p className="item-description">{item.description}</p>
+                    <div className="item-controls">
+                      <div className="quantity-controls">
+                        <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                        <span>{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                      </div>
+                      <button 
+                        className="remove-button"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="cart-summary">
+              <div className="summary-details">
+                <div className="subtotal">
+                  <span>Subtotal:</span>
+                  <span>${getCartTotal().toFixed(2)}</span>
+                </div>
+                <div className="total">
+                  <span>Total:</span>
+                  <span>${getCartTotal().toFixed(2)}</span>
+                </div>
+              </div>
+              
+              <div className="cart-actions">
+                <button 
+                  className="checkout-button"
+                  onClick={() => navigate('/checkout')}
+                >
+                  Proceed to Checkout
+                </button>
+                <button 
+                  className="continue-button"
+                  onClick={() => navigate('/menu')}
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
-};
+}
 
 export default Cart;

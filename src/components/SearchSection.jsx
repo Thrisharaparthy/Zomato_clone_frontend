@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import '../styles/SearchSection.css';
 
-function SearchSection() {
+function SearchSection({ onSearch }) {
   const [location, setLocation] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    console.log('Searching:', { location, searchTerm });
+    if (searchTerm.trim()) {
+      await onSearch(searchTerm);
+      navigate('/search');
+    }
   };
 
   return (

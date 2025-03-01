@@ -1,8 +1,13 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faTwitter, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons';
-import '../styles/Footer.css'; // Make sure this import is present
+import { 
+  faFacebook, 
+  faTwitter, 
+  faInstagram, 
+  faYoutube 
+} from '@fortawesome/free-brands-svg-icons';
+import '../styles/Footer.css';
 
 function Footer() {
   return (
@@ -17,10 +22,38 @@ function Footer() {
             Discover the best food and drinks in your area. We make finding and ordering food easier than ever.
           </p>
           <div className="social-links">
-            <a href="#"><FontAwesomeIcon icon={faFacebook} /></a>
-            <a href="#"><FontAwesomeIcon icon={faTwitter} /></a>
-            <a href="#"><FontAwesomeIcon icon={faInstagram} /></a>
-            <a href="#"><FontAwesomeIcon icon={faYoutube} /></a>
+            <a 
+              href="https://facebook.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="social-link facebook"
+            >
+              <FontAwesomeIcon icon={faFacebook} />
+            </a>
+            <a 
+              href="https://twitter.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="social-link twitter"
+            >
+              <FontAwesomeIcon icon={faTwitter} />
+            </a>
+            <a 
+              href="https://instagram.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="social-link instagram"
+            >
+              <FontAwesomeIcon icon={faInstagram} />
+            </a>
+            <a 
+              href="https://youtube.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="social-link youtube"
+            >
+              <FontAwesomeIcon icon={faYoutube} />
+            </a>
           </div>
         </div>
 
@@ -49,14 +82,14 @@ function Footer() {
           <h3>Newsletter</h3>
           <p className="newsletter-text">Subscribe to our newsletter for offers and updates</p>
           <form className="newsletter-form">
-            <input type="email" placeholder="Enter your email" />
+            <input type="email" placeholder="Enter your email" required />
             <button type="submit">Subscribe</button>
           </form>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2023 Food Zone. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Food Zone. All rights reserved.</p>
       </div>
     </footer>
   );

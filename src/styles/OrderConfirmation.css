@@ -1,0 +1,87 @@
+.order-confirmation {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .confirmation-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .success-icon {
+    font-size: 4em;
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+  
+  .confirmation-card h1 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .order-number {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .thank-you {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  
+  .estimated-time {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .estimated-time h3 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .estimated-time p {
+    color: #ff4d4d;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .confirmation-actions {
+    margin-top: 30px;
+  }
+  
+  .home-button {
+    padding: 12px 30px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .home-button:hover {
+    background-color: #ff3333;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 480px) {
+    .confirmation-card {
+      padding: 20px;
+    }
+  }

@@ -1,93 +1,169 @@
 .recipe-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 300px;
+  margin: 1rem;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.recipe-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.recipe-card:hover .recipe-image img {
+  transform: scale(1.1);
+}
+
+.price-tag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #e23744;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.recipe-content {
+  padding: 1.5rem;
+}
+
+.recipe-content h3 {
+  margin: 0 0 0.5rem;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.recipe-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.star {
+  color: #ffd700;
+}
+
+.rating span {
+  color: #666;
+  margin-left: 0.5rem;
+  font-weight: 500;
+}
+
+.description {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  height: 2.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.category-tag {
+  display: inline-block;
+  background: #f0f0f0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.veg-badge {
+  display: inline-block;
+  background: #4CAF50;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.spicy-level {
+  display: inline-block;
+  color: #e65100;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.order-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: #e23744;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.order-btn:hover {
+  background: #d62d3a;
+  transform: translateY(-2px);
+}
+
+.order-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .recipe-card {
+    width: calc(100% - 2rem);
+    margin: 1rem;
   }
-  
-  .recipe-card:hover {
-    transform: translateY(-5px);
-  }
-  
+
   .recipe-image {
-    position: relative;
-    height: 200px;
-    overflow: hidden;
+    height: 180px;
   }
-  
-  .recipe-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  .recipe-card:hover .recipe-image img {
-    transform: scale(1.1);
-  }
-  
-  .price-tag {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: #e23744;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-weight: bold;
-  }
-  
-  .recipe-content {
-    padding: 1.5rem;
-  }
-  
-  .recipe-content h3 {
-    margin: 0 0 0.5rem;
-    color: #333;
-    font-size: 1.2rem;
-  }
-  
-  .rating {
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .star {
-    color: #ffd700;
-  }
-  
-  .rating span {
-    color: #666;
-    margin-left: 0.5rem;
-  }
-  
+
   .description {
-    color: #666;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    line-height: 1.4;
+    height: auto;
+    -webkit-line-clamp: 3;
   }
-  
-  .order-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background: #e23744;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: background 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .recipe-card {
+    margin: 0.5rem;
   }
-  
-  .order-btn:hover {
-    background: #d62d3a;
+
+  .recipe-content {
+    padding: 1rem;
   }
-  
-  @media (max-width: 768px) {
-    .recipe-image {
-      height: 180px;
-    }
+
+  .recipe-image {
+    height: 160px;
   }
+}
