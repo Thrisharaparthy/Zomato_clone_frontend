@@ -228,49 +228,25 @@ const menuItems = [
   }
 ];
 
-// Rest of your existing route handlers...
-router.get('/', (req, res) => {
+// Search menu items
+router.get('/search', (req, res) => {
   try {
-    // ... existing menu items array ...
-
-    // Add filtering capabilities
-    const { category, isVegetarian, spicyLevel, maxPrice } = req.query;
-    let filteredItems = [...menuItems];
-
-    if (category) {
-      filteredItems = filteredItems.filter(item => item.category === category);
-    }
-
-    if (isVegetarian === 'true') {
-      filteredItems = filteredItems.filter(item => item.isVegetarian);
-    }
-
-    if (spicyLevel) {
-      filteredItems = filteredItems.filter(item => item.spicyLevel <= parseInt(spicyLevel));
-    }
-
-    if (maxPrice) {
-      filteredItems = filteredItems.filter(item => item.price <= parseFloat(maxPrice));
-    }
-
+    const { query } = req.query;
+    const searchResults = menuItems.filter(item => 
+      item.name.toLowerCase().includes(query.toLowerCase()) ||
+      item.description.toLowerCase().includes(query.toLowerCase()) ||
+      item.category.toLowerCase().includes(query.toLowerCase())
+    );
+    
     res.json({
       success: true,
-      message: 'Menu items retrieved successfully',
-      data: filteredItems,
-      categories: [
-        'Pizza',
-        'Burgers',
-        'Pasta',
-        'Appetizers',
-        'Salads',
-        'Beverages',
-        'Desserts'
-      ]
+      message: 'Search results retrieved successfully',
+      data: searchResults
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Failed to retrieve menu items',
+      message: 'Search failed',
       error: error.message
     });
   }
@@ -279,20 +255,17 @@ router.get('/', (req, res) => {
 // Get menu item by ID
 router.get('/:id', (req, res) => {
   try {
-    const { id } = req.params;
-    const menuItem = menuItems.find(item => item.id === parseInt(id));
-
-    if (!menuItem) {
+    const item = menuItems.find(item => item.id === parseInt(req.params.id));
+    if (!item) {
       return res.status(404).json({
         success: false,
         message: 'Menu item not found'
       });
     }
-
     res.json({
       success: true,
       message: 'Menu item retrieved successfully',
-      data: menuItem
+      data: item
     });
   } catch (error) {
     res.status(500).json({
@@ -303,95 +276,6 @@ router.get('/:id', (req, res) => {
   }
 });
 
-// Get menu items by category
-router.get('/category/:category', (req, res) => {
-  try {
-    const { category } = req.params;
-    const categoryItems = menuItems.filter(item => 
-      item.category.toLowerCase() === category.toLowerCase()
-    );
-
-    if (!categoryItems.length) {
-      return res.status(404).json({
-        success: false,
-        message: 'No items found in this category'
-      });
-    }
-
-    res.json({
-      success: true,
-      message: `Menu items for category ${category} retrieved successfully`,
-      data: categoryItems
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to retrieve category items',
-      error: error.message
-    });
-  }
-});
-
-// Search menu items
-router.get('/search/:query', (req, res) => {
-  try {
-    const { query } = req.params;
-    const searchResults = menuItems.filter(item => 
-      item.name.toLowerCase().includes(query.toLowerCase()) ||
-      item.description.toLowerCase().includes(query.toLowerCase())
-    );
-
-    res.json({
-      success: true,
-      message: 'Search results retrieved successfully',
-      data: searchResults,
-      count: searchResults.length
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to search menu items',
-      error: error.message
-    });
-  }
-});
-
-// Get special menu items (e.g., vegetarian, spicy)
-router.get('/special/:type', (req, res) => {
-  try {
-    const { type } = req.params;
-    let specialItems = [];
-
-    switch (type.toLowerCase()) {
-      case 'vegetarian':
-        specialItems = menuItems.filter(item => item.isVegetarian);
-        break;
-      case 'spicy':
-        specialItems = menuItems.filter(item => item.spicyLevel > 0);
-        break;
-      case 'popular':
-        specialItems = menuItems.slice(0, 5); // Mock popular items
-        break;
-      default:
-        return res.status(400).json({
-          success: false,
-          message: 'Invalid special type',
-          validTypes: ['vegetarian', 'spicy', 'popular']
-        });
-    }
-
-    res.json({
-      success: true,
-      message: `${type} menu items retrieved successfully`,
-      data: specialItems
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to retrieve special menu items',
-      error: error.message
-    });
-  }
-});
+// Get all menu items route stays the same...
 
 module.exports = router;

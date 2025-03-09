@@ -17,7 +17,7 @@ const app = express();
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 100,
   message: { error: 'Too many requests, please try again later.' }
 });
 
@@ -31,10 +31,17 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 
+// Updated CORS configuration
+// Updated CORS configuration
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5002'],
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5002',
+    'https://food-zone-frontend.vercel.app',
+    'https://food-zone-msip7-web3-raparthy-thrishas-projects.vercel.app'  // Add this line
+  ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -42,10 +49,13 @@ app.use(cors({
 app.use('/api', limiter);
 
 // Logging
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
-// Static files middleware
-app.use('/images', express.static(path.join(__dirname, '..', 'public', 'images'), {
+// Static files middleware with improved caching
+// Static files middleware with improved caching
+app.use('/images', express.static(path.join(__dirname, 'public', 'images'), {
   maxAge: '1d',
   etag: true,
   lastModified: true,
@@ -72,6 +82,7 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Welcome route
 // Welcome route
 app.get('/', (req, res) => {
   res.json({
@@ -125,6 +136,7 @@ const server = app.listen(PORT, () => {
   console.log('------------------');
   console.log(`🌐 URL: http://localhost:${PORT}`);
   console.log(`⏰ Started at: ${new Date().toLocaleString()}`);
+  console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log('------------------');
 });
 
@@ -134,6 +146,14 @@ process.on('unhandledRejection', (err) => {
   console.error(err);
   server.close(() => {
     process.exit(1);
+  });
+});
+
+// Handle SIGTERM
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM received. Shutting down gracefully');
+  server.close(() => {
+    console.log('💥 Process terminated!');
   });
 });
 

@@ -1,5 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+
+// Secret key for JWT
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+
+// Session storage (replace with Redis or database in production)
+const sessions = new Map();
 
 // User Registration
 router.post('/register', (req, res) => {
@@ -32,16 +39,34 @@ router.post('/register', (req, res) => {
       });
     }
 
-    // Mock successful registration
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: Date.now(), email, name },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Store session
+    sessions.set(token, {
+      id: Date.now(),
+      name,
+      email,
+      phone,
+      createdAt: new Date().toISOString()
+    });
+
     res.status(201).json({
       success: true,
       message: 'Registration successful',
       data: {
-        id: Date.now(),
-        name,
-        email,
-        phone,
-        createdAt: new Date().toISOString()
+        token,
+        user: {
+          id: Date.now(),
+          name,
+          email,
+          phone,
+          createdAt: new Date().toISOString()
+        }
       }
     });
   } catch (error) {
@@ -66,16 +91,30 @@ router.post('/login', (req, res) => {
       });
     }
 
-    // Mock successful login
+    // Generate new token
+    const token = jwt.sign(
+      { id: 1, email, name: 'John Doe' },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Store session
+    sessions.set(token, {
+      id: 1,
+      email,
+      name: 'John Doe',
+      role: 'user'
+    });
+
     res.json({
       success: true,
       message: 'Login successful',
       data: {
-        token: 'mock-jwt-token-' + Date.now(),
+        token,
         user: {
           id: 1,
           name: 'John Doe',
-          email: email,
+          email,
           role: 'user'
         },
         expiresIn: '24h'
@@ -93,7 +132,6 @@ router.post('/login', (req, res) => {
 // User Logout
 router.post('/logout', (req, res) => {
   try {
-    // Check for auth token
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       return res.status(401).json({
@@ -101,6 +139,11 @@ router.post('/logout', (req, res) => {
         message: 'No authentication token provided'
       });
     }
+
+    const token = authHeader.split(' ')[1];
+    
+    // Remove session
+    sessions.delete(token);
 
     res.json({
       success: true,
@@ -118,12 +161,34 @@ router.post('/logout', (req, res) => {
   }
 });
 
+// Middleware to verify token
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({
+      success: false,
+      message: 'No authentication token provided'
+    });
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid or expired token'
+    });
+  }
+};
+
 // Password Reset Request
 router.post('/forgot-password', (req, res) => {
   try {
     const { email } = req.body;
 
-    // Basic validation
     if (!email) {
       return res.status(400).json({
         success: false,
@@ -131,7 +196,6 @@ router.post('/forgot-password', (req, res) => {
       });
     }
 
-    // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
@@ -140,14 +204,19 @@ router.post('/forgot-password', (req, res) => {
       });
     }
 
-    // Mock password reset
+    const resetToken = jwt.sign(
+      { email, purpose: 'password-reset' },
+      JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
     res.json({
       success: true,
       message: 'Password reset instructions sent',
       data: {
-        resetToken: 'mock-reset-token-' + Date.now(),
+        resetToken,
         expiresIn: '1h',
-        email: email
+        email
       }
     });
   } catch (error) {
@@ -160,11 +229,10 @@ router.post('/forgot-password', (req, res) => {
 });
 
 // Reset Password
-router.post('/reset-password', (req, res) => {
+router.post('/reset-password', verifyToken, (req, res) => {
   try {
     const { resetToken, newPassword, confirmPassword } = req.body;
 
-    // Basic validation
     if (!resetToken || !newPassword || !confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -173,7 +241,6 @@ router.post('/reset-password', (req, res) => {
       });
     }
 
-    // Password match validation
     if (newPassword !== confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -181,7 +248,6 @@ router.post('/reset-password', (req, res) => {
       });
     }
 
-    // Password strength validation
     if (newPassword.length < 8) {
       return res.status(400).json({
         success: false,

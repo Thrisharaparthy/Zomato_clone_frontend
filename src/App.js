@@ -235,7 +235,14 @@ const sampleMenuItems = [
   }
 ];
 
-// ... rest of the code remains the same ...
+
+// ... existing imports ...
+const API_URL = process.env.NODE_ENV === 'production'
+  ? 'https://food-zone-mu.vercel.app/api'
+  : 'http://localhost:5002/api';
+
+
+
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
